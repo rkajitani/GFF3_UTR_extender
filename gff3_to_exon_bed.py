@@ -29,4 +29,5 @@ with open(sys.argv[1]) as fin:
         attr_str = f[8]
         feat_id = gff_utils.gff3_attr_get_id(attr_str)
         parent_id = gff3_tree.get_parent_id(feat_id)
-        print(seq_name, start - 1, end, f"{feat_id};{parent_id}", 0, strand, sep="\t")
+        root_id = gff3_tree.get_root_id(feat_id)
+        print(seq_name, start - 1, end, f"{feat_id};{parent_id};{root_id}", 0, strand, sep="\t")

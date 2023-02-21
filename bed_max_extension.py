@@ -5,10 +5,11 @@ import sys
 
 
 class Transcript:
-    def __init__(self, seq_name, strand, start, end):
+    def __init__(self, seq_name, strand, start, end, gene_id):
         self.seq_name = seq_name
         self.strand = strand
         self.pos_list = [(start, end)]
+        self.gene_id = gene_id
 
 
 class EdgeExonHit:
@@ -36,11 +37,11 @@ for i in (0, 1):
     with open(sys.argv[i + 1]) as fin:
         for ln in fin:
             f = ln.rstrip("\n").split("\t")
-            exon_id, trans_id = f[3].split(";")
+            exon_id, trans_id, gene_id = f[3].split(";")
             if trans_id in trans_dict[i]:
                 trans_dict[i][trans_id].pos_list.append((int(f[1]), int(f[2])))
             else:
-                trans_dict[i][trans_id] = Transcript(f[0], f[5], int(f[1]), int(f[2]))
+                trans_dict[i][trans_id] = Transcript(f[0], f[5], int(f[1]), int(f[2]), gene_id)
     for trans_info in trans_dict[i].values():
         trans_info.pos_list.sort(key=lambda x: x[0])
 
@@ -108,7 +109,7 @@ for direction in (0, 1):
 
 
 for center_trans_id, center_trans_info in trans_dict[0].items():
-    print(center_trans_info.seq_name, center_trans_id, center_trans_info.strand, sep="\t", end="\t")
+    print(center_trans_info.seq_name, center_trans_info.gene_id, center_trans_id, center_trans_info.strand, sep="\t", end="\t")
     print(sum([x[1] - x[0] for x in center_trans_info.pos_list]), end="\t")
     print(";".join([str(x[0]) for x in center_trans_info.pos_list]), end="\t")
     print(";".join([str(x[1]) for x in center_trans_info.pos_list]), end="")

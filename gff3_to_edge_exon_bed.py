@@ -5,10 +5,11 @@ import gff_utils
 
 
 class Transcript:
-    def __init__(self, seq_name, strand, start, end):
+    def __init__(self, seq_name, strand, start, end, gene_id):
         self.seq_name = seq_name
         self.strand = strand
         self.pos_list = [(start, end)]
+        self.gene_id = gene_id
 
 
 if len(sys.argv) != 2:
@@ -34,12 +35,13 @@ with open(sys.argv[1]) as fin:
         attr_str = f[8]
         feat_id = gff_utils.gff3_attr_get_id(attr_str)
         parent_id = gff3_tree.get_parent_id(feat_id)
+        root_id = gff3_tree.get_root_id(feat_id)
         if parent_id in transcript_dict:
             transcript_dict[parent_id].pos_list.append((start, end))
         else:
-            transcript_dict[parent_id] = Transcript(seq_name, strand, start, end)
+            transcript_dict[parent_id] = Transcript(seq_name, strand, start, end, root_id)
 
 for trans_id, transcript in transcript_dict.items():
     sorted_pos = sorted(transcript.pos_list, key=lambda x: x[0])
-    print(transcript.seq_name, sorted_pos[0][0] - 1, sorted_pos[0][1], f"{trans_id}.left;{trans_id}", 0, transcript.strand, sep="\t")
-    print(transcript.seq_name, sorted_pos[-1][0] - 1, sorted_pos[-1][1], f"{trans_id}.right;{trans_id}", 0, transcript.strand, sep="\t")
+    print(transcript.seq_name, sorted_pos[0][0] - 1, sorted_pos[0][1], f"{trans_id}.left;{trans_id};{transcript.gene_id}", 0, transcript.strand, sep="\t")
+    print(transcript.seq_name, sorted_pos[-1][0] - 1, sorted_pos[-1][1], f"{trans_id}.right;{trans_id};{transcript.gene_id}", 0, transcript.strand, sep="\t")
