@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
 import sys
-import my_gff
+import gff_utils
 
 
 if len(sys.argv) != 2:
     print("usage:", sys.argv[0], "in.gff3", file=sys.stderr)
     sys.exit(1)
 
-gff3_tree = my_gff.GFF3Tree()
+gff3_tree = gff_utils.GFF3Tree()
 gff3_tree.set_relations(sys.argv[1])
 
 transcript_dict = dict()
@@ -27,6 +27,6 @@ with open(sys.argv[1]) as fin:
         end = int(f[4])
         strand = f[6]
         attr_str = f[8]
-        feat_id = my_gff.gff3_attr_get_id(attr_str)
+        feat_id = gff_utils.gff3_attr_get_id(attr_str)
         parent_id = gff3_tree.get_parent_id(feat_id)
         print(seq_name, start - 1, end, f"{feat_id};{parent_id}", 0, strand, sep="\t")
