@@ -90,7 +90,8 @@ for direction in (0, 1):
                         ext_len += hit.edge_exon_pos[direction] - ext_exon_pos[direction]
                         ext_len += sum([x[1] - x[0] for x in ext_exon_pos_list[:i]])
                         pos_list += ext_exon_pos_list[:i]
-                        pos_list.append((ext_exon_pos[direction], hit.edge_exon_pos[direction]))
+                        if ext_exon_pos[direction] < hit.edge_exon_pos[direction]:
+                            pos_list.append((ext_exon_pos[direction], hit.edge_exon_pos[direction]))
                         break
             else:
                 for i in reversed(range(0, len(ext_exon_pos_list))):
@@ -98,7 +99,8 @@ for direction in (0, 1):
                     if hit.edge_exon_pos[oposite_dir] == ext_exon_pos[oposite_dir]:
                         ext_len += ext_exon_pos[direction] - hit.edge_exon_pos[direction]
                         ext_len += sum([x[1] - x[0] for x in ext_exon_pos_list[i + 1:]])
-                        pos_list.append((hit.edge_exon_pos[direction], ext_exon_pos[direction]))
+                        if hit.edge_exon_pos[direction] < ext_exon_pos[direction]:
+                            pos_list.append((hit.edge_exon_pos[direction], ext_exon_pos[direction]))
                         pos_list += ext_exon_pos_list[i + 1:]
                         break
 
