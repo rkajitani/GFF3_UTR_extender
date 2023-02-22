@@ -65,7 +65,7 @@ with open(sys.argv[3]) as fin:
 
         oposite_dir = direction ^ 1
         if edge_exon_pos[oposite_dir] == ext_exon_pos[oposite_dir]:
-            if edge_trans_id in hit_dict:
+            if edge_trans_id in hit_dict[direction]:
                 hit_dict[direction][edge_trans_id].append(EdgeExonHit(edge_exon_pos, ext_exon_pos, ext_trans_id))
             else:
                 hit_dict[direction][edge_trans_id] = [EdgeExonHit(edge_exon_pos, ext_exon_pos, ext_trans_id)]
