@@ -12,9 +12,11 @@ class Transcript:
         self.gene_id = gene_id
 
 
-if len(sys.argv) != 2:
-    print("usage:", sys.argv[0], "in.gff3", file=sys.stderr)
+if len(sys.argv) != 3:
+    print("usage:", sys.argv[0], "in.gff3 exon_feature_str", file=sys.stderr)
     sys.exit(1)
+
+exon_feat_str = sys.argv[2]
 
 gff3_tree = gff_utils.GFF3Tree()
 gff3_tree.set_relations(sys.argv[1])
@@ -26,7 +28,7 @@ with open(sys.argv[1]) as fin:
             continue
         f = ln.rstrip("\n").split("\t")
         feat_type = f[2]
-        if feat_type != "exon":
+        if feat_type != exon_feat_str:
             continue
         seq_name = f[0]
         start = int(f[3])
