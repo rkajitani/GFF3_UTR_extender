@@ -55,8 +55,8 @@ with open(sys.argv[3]) as fin:
         ovl_len = int(f[12])
         if edge_exon_pos[1] - edge_exon_pos[0] != ovl_len:
             continue
-        edge_exon_id, edge_trans_id = f[3].split(";")
-        ext_exon_id, ext_trans_id = f[9].split(";")
+        edge_exon_id, edge_trans_id, edge_gene_id = f[3].split(";")
+        ext_exon_id, ext_trans_id, ext_gene_id = f[9].split(";")
 
         direction = 0
         # 0: left, 1: right
